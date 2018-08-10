@@ -7,7 +7,7 @@ module.exports = function (context, req) {
     .then(quote => {
 		context.log(quote);
 		context.res = {
-			body: "hello " + quote.content		
+			body: "hello " + quote[0].content		
 		};
 		
 		context.done();
