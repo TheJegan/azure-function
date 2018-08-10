@@ -6,7 +6,7 @@ module.exports = function (context, req) {
     randomQuote()
     .then(quote => {
 		context.res = {
-			body: "hello " + quote;		
+			body: "hello " + quote		
 		};
 	})
     .catch(err => console.error(err));
