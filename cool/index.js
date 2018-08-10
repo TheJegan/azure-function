@@ -8,6 +8,8 @@ module.exports = function (context, req) {
 		context.res = {
 			body: "hello " + quote		
 		};
+		
+		context.done();
 	})
     .catch(err => console.error(err));
 
