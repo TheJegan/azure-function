@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "apollo-server-azure-functions": "^1.4.0",
     "random-quote": "0.0.1"
   },
   "devDependencies": {},

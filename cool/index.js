@@ -1,7 +1,48 @@
 const randomQuote = require('random-quote');
+const server = require("apollo-server-azure-functions");
+
+
+const typeDefs = `
+  type Random {
+    id: Int!
+    rand: String
+  }
+
+  type Query {
+    rands: [Random]
+    rand(id: Int!): Random
+  }
+`;
+
+const rands = [{ id: 1, rand: "random" }, { id: 2, rand: "modnar" }];
+
+const resolvers = {
+  Query: {
+    rands: () => rands,
+    rand: (_, { id }) => rands.find(rand => rand.id === id)
+  }
+};
+
+const schema = graphqlTools.makeExecutableSchema({
+  typeDefs,
+  resolvers
+});
+
 
 module.exports = function (context, req) {
-    context.log('JavaScript HTTP trigger function processed a request.');
+  if (req.method === 'POST') {
+    server.graphqlAzureFunctions({
+      endpointURL: '/api/graphql',
+      schema: schema
+    })(context, req);
+  } else if (req.method === 'GET') {
+    return server.graphiqlAzureFunctions({
+      endpointURL: '/api/graphql',
+      schema: schema
+    })(context, req);
+  }
+
+/*    context.log('JavaScript HTTP trigger function processed a request.');
     
     randomQuote()
     .then(quote => {
@@ -13,7 +54,7 @@ module.exports = function (context, req) {
 		context.done();
 	})
     .catch(err => console.error(err));
-
+*/
 /*
     if (req.query.name || (req.body && req.body.name)) {
         context.res = {
